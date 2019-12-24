@@ -78,8 +78,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             [self.F1, self.F2, self.F3, self.F4, self.F5, self.F6, self.F7, self.F8],
             [self.G1, self.G2, self.G3, self.G4, self.G5, self.G6, self.G7, self.G8],
             [self.H1, self.H2, self.H3, self.H4, self.H5, self.H6, self.H7, self.H8]]
-        self.buttons_clicked()
+        self.buttonsClicked()
         self.selected = None
+        self.currentColor = 'B'
         self.selectable = []
         self.destroyable = []
         self.createGridColor()
@@ -88,20 +89,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def action(self, button):
         position = ButtonToPosition(button)
         if self.selected is None:
-            self.selected = button
-            LegalMovesList = board.getPiece(position).getLegalMoves(board.getBoard())
-            for LegalNull in LegalMovesList[0]:
-                self.selectable.append(PositionToButton(LegalNull.getPosition()))
-            for LegalDestroyable in LegalMovesList[1]:
-                self.destroyable.append(PositionToButton(LegalDestroyable.getPosition()))
+            if board.getPiece(position).getName() != '   ':
+                if board.getPiece(position).getColor() == self.currentColor:
+                    self.selected = button
+                    LegalMovesList = board.getPiece(position).getLegalMoves(board.getBoard())
+                    for LegalNull in LegalMovesList[0]:
+                        self.selectable.append(PositionToButton(LegalNull.getPosition()))
+                    for LegalDestroyable in LegalMovesList[1]:
+                        self.destroyable.append(PositionToButton(LegalDestroyable.getPosition()))
+                else:
+                    print("Not your turn!")
         else:
             self.movingAnimation(self.selected, button)
             board.move(ButtonToPosition(self.selected), position)
+            self.switchColor()
             self.selected = None
             self.selectable = []
             self.destroyable = []
         self.createGridColor()
         self.createIcons()
+
+    def switchColor(self):
+        if self.currentColor == 'B':
+            self.currentColor = 'W'
+        else:
+            self.currentColor = 'B'
 
     def movingAnimation(self, button1, button2):
         fluidity = 20
@@ -115,7 +127,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         newX = button1.x()
         newY = button1.y()
         if "_N" not in piece.getName():
-            for i in range(fluidity):
+            for _ in range(fluidity):
                 newX += incX
                 newY += incY
                 self.moving.setGeometry(QtCore.QRect(newX, newY, 90, 90))
@@ -123,20 +135,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             """Moving 2 tiles abroad first, then 1 tile for the Knight."""
             if abs(button2.x() - button1.x()) == 180:
-                for i in range(fluidity):
+                for _ in range(fluidity):
                     newX += incX
                     self.moving.setGeometry(QtCore.QRect(newX, newY, 90, 90))
                     QtTest.QTest.qWait(25)
-                for i in range(fluidity):
+                for _ in range(fluidity):
                     newY += incY
                     self.moving.setGeometry(QtCore.QRect(newX, newY, 90, 90))
                     QtTest.QTest.qWait(25)
             else:
-                for i in range(fluidity):
+                for _ in range(fluidity):
                     newY += incY
                     self.moving.setGeometry(QtCore.QRect(newX, newY, 90, 90))
                     QtTest.QTest.qWait(25)
-                for i in range(fluidity):
+                for _ in range(fluidity):
                     newX += incX
                     self.moving.setGeometry(QtCore.QRect(newX, newY, 90, 90))
                     QtTest.QTest.qWait(25)
@@ -206,7 +218,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if self.selected is not None and button.objectName() == self.selected.objectName():
                     button.setStyleSheet(button.styleSheet() + selected_stylesheet)
 
-    def buttons_clicked(self):
+    def buttonsClicked(self):
         self.A1.clicked.connect(lambda: self.action(self.A1))
         self.A2.clicked.connect(lambda: self.action(self.A2))
         self.A3.clicked.connect(lambda: self.action(self.A3))
