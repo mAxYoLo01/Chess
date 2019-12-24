@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtTest
 from ui_chessboard import Ui_MainWindow
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from board import Board
@@ -84,7 +84,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.destroyable = []
         self.createGridColor()
         self.createIcons()
-        # board.printBoard()
 
     def action(self, button):
         position = ButtonToPosition(button)
@@ -96,13 +95,53 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for LegalDestroyable in LegalMovesList[1]:
                 self.destroyable.append(PositionToButton(LegalDestroyable.getPosition()))
         else:
+            self.movingAnimation(self.selected, button)
             board.move(ButtonToPosition(self.selected), position)
             self.selected = None
             self.selectable = []
             self.destroyable = []
         self.createGridColor()
         self.createIcons()
-        # board.printBoard()
+
+    def movingAnimation(self, button1, button2):
+        fluidity = 20
+        self.moving.setGeometry(QtCore.QRect(button1.x(), button1.y(), 90, 90))
+        icon = QtGui.QIcon()
+        button1.setIcon(icon)
+        piece = board.getPiece(ButtonToPosition(button1))
+        self.moving.setIcon(self.convertToImage(piece))
+        incX = (button2.x() - button1.x()) / fluidity
+        incY = (button2.y() - button1.y()) / fluidity
+        newX = button1.x()
+        newY = button1.y()
+        if "_N" not in piece.getName():
+            for i in range(fluidity):
+                newX += incX
+                newY += incY
+                self.moving.setGeometry(QtCore.QRect(newX, newY, 90, 90))
+                QtTest.QTest.qWait(25)
+        else:
+            """Moving 2 tiles abroad first, then 1 tile for the Knight."""
+            if abs(button2.x() - button1.x()) == 180:
+                for i in range(fluidity):
+                    newX += incX
+                    self.moving.setGeometry(QtCore.QRect(newX, newY, 90, 90))
+                    QtTest.QTest.qWait(25)
+                for i in range(fluidity):
+                    newY += incY
+                    self.moving.setGeometry(QtCore.QRect(newX, newY, 90, 90))
+                    QtTest.QTest.qWait(25)
+            else:
+                for i in range(fluidity):
+                    newY += incY
+                    self.moving.setGeometry(QtCore.QRect(newX, newY, 90, 90))
+                    QtTest.QTest.qWait(25)
+                for i in range(fluidity):
+                    newX += incX
+                    self.moving.setGeometry(QtCore.QRect(newX, newY, 90, 90))
+                    QtTest.QTest.qWait(25)
+        self.moving.setGeometry(QtCore.QRect(-100, -100, 90, 90))
+        self.moving.setIcon(icon)
 
     def createIcons(self):
         for rowButton in self.buttons:
