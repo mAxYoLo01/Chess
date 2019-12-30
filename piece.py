@@ -19,7 +19,7 @@ class Piece:
         return self.count
 
     def incrementCount(self):
-        self.count = self.getCount() + 1
+        self.count += 1
 
     def isInBound(self, row, column):
         return row > -1 and row < 8 and column > -1 and column < 8

@@ -87,7 +87,7 @@ class Board:
         boardToPrint = "#############################################################\n\n "
         boardToPrint += " |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |\n"
         i = 0
-        for row in self.board:
+        for row in self.getBoard():
             boardToPrint += str(i)
             for tile in row:
                 boardToPrint += " | " + tile.getName()
@@ -146,14 +146,20 @@ class Board:
         return self.board
 
     def getPiece(self, position):
-        return self.board[position[0]][position[1]]
+        return self.getBoard()[position[0]][position[1]]
 
     def addPiece(self, piece, position):
         piece.setPosition(position)
-        self.board[position[0]][position[1]] = piece
+        self.getBoard()[position[0]][position[1]] = piece
 
     def removePiece(self, position):
-        self.board[position[0]][position[1]] = NullPiece(position)
+        self.getBoard()[position[0]][position[1]] = NullPiece(position)
 
     def hasPiece(self, position):
-        return self.board[position[0]][position[1]].getName() != '   '
+        return self.getBoard()[position[0]][position[1]].getName() != '   '
+
+    def isCheck(self):
+        pass
+
+    def isCheckmate(self):
+        pass

@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtGui, QtTest
+from PyQt5 import QtCore, QtGui, QtTest, QtWidgets
 from ui_chessboard import Ui_MainWindow
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from board import Board
@@ -13,11 +13,14 @@ if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
 if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
     QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
-selected_stylesheet = "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(144, 144, 0, 255), stop:1 rgba(177, 177, 0, 255));"
+selected_stylesheet = "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(9, 130, 19, 255), stop:1 rgba(35, 179, 9, 255));"
 selectable_stylesheet = "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(189, 189, 0, 255), stop:1 rgba(204, 204, 0, 255));"
 destroyable_stylesheet = "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(203, 0, 0, 255), stop:1 rgba(220, 85, 85, 255));"
 black_stylesheet = "border: 2px solid;\n background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(123, 119, 120, 255), stop:1 rgba(125, 121, 122, 255));"
 white_stylesheet = "border: 2px solid;\n background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(231, 231, 231, 255), stop:1 rgba(246, 251, 247, 255));"
+hover1 = "<html><head/><body><p><span style=\" font-size:24pt; font-weight:600; color:#ffff00;\">"
+hover2 = "</span></p></body></html>"
+hover3 = "<html><head/><body><p><span style=\" font-size:20pt; font-weight:600; color:#ffffff;\">"
 
 
 def ButtonToPosition(button):
@@ -64,21 +67,70 @@ def PositionToButton(position):
     return column + str(row)
 
 
+class CustomButton(QtWidgets.QPushButton):
+    def __init__(self, parent):
+        QtWidgets.QPushButton.__init__(self, parent)
+
+    def enterEvent(self, event):
+        if self.objectName()[0] == 'A':
+            self.parent().parent().A.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+        elif self.objectName()[0] == 'B':
+            self.parent().parent().B.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+        elif self.objectName()[0] == 'C':
+            self.parent().parent().C.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+        elif self.objectName()[0] == 'D':
+            self.parent().parent().D.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+        elif self.objectName()[0] == 'E':
+            self.parent().parent().E.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+        elif self.objectName()[0] == 'F':
+            self.parent().parent().F.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+        elif self.objectName()[0] == 'G':
+            self.parent().parent().G.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+        elif self.objectName()[0] == 'H':
+            self.parent().parent().H.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+        if self.objectName()[1] == '1':
+            self.parent().parent().v1.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+        elif self.objectName()[1] == '2':
+            self.parent().parent().v2.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+        elif self.objectName()[1] == '3':
+            self.parent().parent().v3.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+        elif self.objectName()[1] == '4':
+            self.parent().parent().v4.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+        elif self.objectName()[1] == '5':
+            self.parent().parent().v5.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+        elif self.objectName()[1] == '6':
+            self.parent().parent().v6.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+        elif self.objectName()[1] == '7':
+            self.parent().parent().v7.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+        elif self.objectName()[1] == '8':
+            self.parent().parent().v8.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+
+    def leaveEvent(self, event):
+        self.parent().parent().A.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'A' + hover2))
+        self.parent().parent().B.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'B' + hover2))
+        self.parent().parent().C.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'C' + hover2))
+        self.parent().parent().D.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'D' + hover2))
+        self.parent().parent().E.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'E' + hover2))
+        self.parent().parent().F.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'F' + hover2))
+        self.parent().parent().G.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'G' + hover2))
+        self.parent().parent().H.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'H' + hover2))
+        self.parent().parent().v1.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '1' + hover2))
+        self.parent().parent().v2.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '2' + hover2))
+        self.parent().parent().v3.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '3' + hover2))
+        self.parent().parent().v4.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '4' + hover2))
+        self.parent().parent().v5.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '5' + hover2))
+        self.parent().parent().v6.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '6' + hover2))
+        self.parent().parent().v7.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '7' + hover2))
+        self.parent().parent().v8.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '8' + hover2))
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
-        self.buttons = [
-            [self.A1, self.A2, self.A3, self.A4, self.A5, self.A6, self.A7, self.A8],
-            [self.B1, self.B2, self.B3, self.B4, self.B5, self.B6, self.B7, self.B8],
-            [self.C1, self.C2, self.C3, self.C4, self.C5, self.C6, self.C7, self.C8],
-            [self.D1, self.D2, self.D3, self.D4, self.D5, self.D6, self.D7, self.D8],
-            [self.E1, self.E2, self.E3, self.E4, self.E5, self.E6, self.E7, self.E8],
-            [self.F1, self.F2, self.F3, self.F4, self.F5, self.F6, self.F7, self.F8],
-            [self.G1, self.G2, self.G3, self.G4, self.G5, self.G6, self.G7, self.G8],
-            [self.H1, self.H2, self.H3, self.H4, self.H5, self.H6, self.H7, self.H8]]
-        self.buttonsClicked()
+        self.setWindowTitle("Chess")
+        self.initializeButtons()
         self.selected = None
         self.currentColor = 'B'
         self.selectable = []
@@ -100,9 +152,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 else:
                     print("Not your turn!")
         else:
-            self.movingAnimation(self.selected, button)
-            board.move(ButtonToPosition(self.selected), position)
-            self.switchColor()
+            if button != self.selected:
+                if button.objectName() in self.selectable or button.objectName() in self.destroyable:
+                    self.movingAnimation(self.selected, button)
+                    board.move(ButtonToPosition(self.selected), position)
+                    self.switchColor()
+                else:
+                    print("Can't move at this position!")
             self.selected = None
             self.selectable = []
             self.destroyable = []
@@ -133,7 +189,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.moving.setGeometry(QtCore.QRect(newX, newY, 90, 90))
                 QtTest.QTest.qWait(25)
         else:
-            """Moving 2 tiles abroad first, then 1 tile for the Knight."""
+            """Moving 2 tiles abroad first, then 1 tile only for the Knight."""
             if abs(button2.x() - button1.x()) == 180:
                 for _ in range(fluidity):
                     newX += incX
@@ -218,7 +274,97 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if self.selected is not None and button.objectName() == self.selected.objectName():
                     button.setStyleSheet(button.styleSheet() + selected_stylesheet)
 
-    def buttonsClicked(self):
+    def initializeButtons(self):
+        self.A1 = CustomButton(self.centralwidget)
+        self.A2 = CustomButton(self.centralwidget)
+        self.A3 = CustomButton(self.centralwidget)
+        self.A4 = CustomButton(self.centralwidget)
+        self.A5 = CustomButton(self.centralwidget)
+        self.A6 = CustomButton(self.centralwidget)
+        self.A7 = CustomButton(self.centralwidget)
+        self.A8 = CustomButton(self.centralwidget)
+        self.B1 = CustomButton(self.centralwidget)
+        self.B2 = CustomButton(self.centralwidget)
+        self.B3 = CustomButton(self.centralwidget)
+        self.B4 = CustomButton(self.centralwidget)
+        self.B5 = CustomButton(self.centralwidget)
+        self.B6 = CustomButton(self.centralwidget)
+        self.B7 = CustomButton(self.centralwidget)
+        self.B8 = CustomButton(self.centralwidget)
+        self.C1 = CustomButton(self.centralwidget)
+        self.C2 = CustomButton(self.centralwidget)
+        self.C3 = CustomButton(self.centralwidget)
+        self.C4 = CustomButton(self.centralwidget)
+        self.C5 = CustomButton(self.centralwidget)
+        self.C6 = CustomButton(self.centralwidget)
+        self.C7 = CustomButton(self.centralwidget)
+        self.C8 = CustomButton(self.centralwidget)
+        self.D1 = CustomButton(self.centralwidget)
+        self.D2 = CustomButton(self.centralwidget)
+        self.D3 = CustomButton(self.centralwidget)
+        self.D4 = CustomButton(self.centralwidget)
+        self.D5 = CustomButton(self.centralwidget)
+        self.D6 = CustomButton(self.centralwidget)
+        self.D7 = CustomButton(self.centralwidget)
+        self.D8 = CustomButton(self.centralwidget)
+        self.E1 = CustomButton(self.centralwidget)
+        self.E2 = CustomButton(self.centralwidget)
+        self.E3 = CustomButton(self.centralwidget)
+        self.E4 = CustomButton(self.centralwidget)
+        self.E5 = CustomButton(self.centralwidget)
+        self.E6 = CustomButton(self.centralwidget)
+        self.E7 = CustomButton(self.centralwidget)
+        self.E8 = CustomButton(self.centralwidget)
+        self.F1 = CustomButton(self.centralwidget)
+        self.F2 = CustomButton(self.centralwidget)
+        self.F3 = CustomButton(self.centralwidget)
+        self.F4 = CustomButton(self.centralwidget)
+        self.F5 = CustomButton(self.centralwidget)
+        self.F6 = CustomButton(self.centralwidget)
+        self.F7 = CustomButton(self.centralwidget)
+        self.F8 = CustomButton(self.centralwidget)
+        self.G1 = CustomButton(self.centralwidget)
+        self.G2 = CustomButton(self.centralwidget)
+        self.G3 = CustomButton(self.centralwidget)
+        self.G4 = CustomButton(self.centralwidget)
+        self.G5 = CustomButton(self.centralwidget)
+        self.G6 = CustomButton(self.centralwidget)
+        self.G7 = CustomButton(self.centralwidget)
+        self.G8 = CustomButton(self.centralwidget)
+        self.H1 = CustomButton(self.centralwidget)
+        self.H2 = CustomButton(self.centralwidget)
+        self.H3 = CustomButton(self.centralwidget)
+        self.H4 = CustomButton(self.centralwidget)
+        self.H5 = CustomButton(self.centralwidget)
+        self.H6 = CustomButton(self.centralwidget)
+        self.H7 = CustomButton(self.centralwidget)
+        self.H8 = CustomButton(self.centralwidget)
+        self.buttons = [
+            [self.A1, self.A2, self.A3, self.A4, self.A5, self.A6, self.A7, self.A8],
+            [self.B1, self.B2, self.B3, self.B4, self.B5, self.B6, self.B7, self.B8],
+            [self.C1, self.C2, self.C3, self.C4, self.C5, self.C6, self.C7, self.C8],
+            [self.D1, self.D2, self.D3, self.D4, self.D5, self.D6, self.D7, self.D8],
+            [self.E1, self.E2, self.E3, self.E4, self.E5, self.E6, self.E7, self.E8],
+            [self.F1, self.F2, self.F3, self.F4, self.F5, self.F6, self.F7, self.F8],
+            [self.G1, self.G2, self.G3, self.G4, self.G5, self.G6, self.G7, self.G8],
+            [self.H1, self.H2, self.H3, self.H4, self.H5, self.H6, self.H7, self.H8]]
+        new_x = 300
+        i = 0
+        for rowB in self.buttons:
+            new_y = 60
+            j = 0
+            for button in rowB:
+                button.setGeometry(QtCore.QRect(new_x, new_y, 90, 90))
+                button.setObjectName(PositionToButton((j, i)))
+                button.setIconSize(QtCore.QSize(60, 60))
+                button.setCheckable(False)
+                button.setDefault(False)
+                button.setFlat(False)
+                button.raise_()
+                new_y += 90
+                j += 1
+            new_x += 90
+            i += 1
         self.A1.clicked.connect(lambda: self.action(self.A1))
         self.A2.clicked.connect(lambda: self.action(self.A2))
         self.A3.clicked.connect(lambda: self.action(self.A3))
@@ -283,6 +429,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.H6.clicked.connect(lambda: self.action(self.H6))
         self.H7.clicked.connect(lambda: self.action(self.H7))
         self.H8.clicked.connect(lambda: self.action(self.H8))
+        self.moving.raise_()
 
 
 if __name__ == "__main__":
