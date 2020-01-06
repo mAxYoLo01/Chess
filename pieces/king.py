@@ -1,10 +1,10 @@
-from piece import Piece
+from pieces.piece import Piece
 
 
-class Knight(Piece):
+class King(Piece):
     def __init__(self, color):
         Piece.__init__(self, color)
-        self.name = color + '_' + 'N'
+        self.name = color + '_' + 'K'
 
     def getLegalMoves(self, board):
         position = self.getPosition()
@@ -13,7 +13,7 @@ class Knight(Piece):
         for row in board:
             for tile in row:
                 if tile.getPosition() == position:
-                    positions = [[2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1], [-1, 2], [1, 2]]
+                    positions = [[1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1], [0, 1]]
                     for pos in positions:
                         row = position[0] + pos[0]
                         column = position[1] + pos[1]

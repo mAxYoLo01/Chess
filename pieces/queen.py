@@ -1,6 +1,6 @@
-from piece import Piece
-from rook import Rook
-from bishop import Bishop
+from pieces.piece import Piece
+from pieces.rook import Rook
+from pieces.bishop import Bishop
 
 
 class Queen(Piece):

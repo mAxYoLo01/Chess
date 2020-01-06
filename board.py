@@ -1,10 +1,10 @@
-from rook import Rook
-from knight import Knight
-from bishop import Bishop
-from queen import Queen
-from king import King
-from pawn import Pawn
-from null_piece import NullPiece
+from pieces.rook import Rook
+from pieces.knight import Knight
+from pieces.bishop import Bishop
+from pieces.queen import Queen
+from pieces.king import King
+from pieces.pawn import Pawn
+from pieces.null_piece import NullPiece
 
 
 class Board:
