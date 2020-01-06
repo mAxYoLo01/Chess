@@ -18,7 +18,7 @@ class King(Piece):
                         row = position[0] + pos[0]
                         column = position[1] + pos[1]
                         if self.isInBound(row, column):
-                            if board[row][column].getName() == "   ":
+                            if board[row][column].isNull():
                                 LegalMovesListNull.append(board[row][column])
                             elif board[row][column].getColor() != tile.getColor():
                                 LegalMovesListDestroyable.append(board[row][column])

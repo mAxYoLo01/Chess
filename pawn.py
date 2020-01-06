@@ -11,29 +11,29 @@ class Pawn(Piece):
         position = self.getPosition()
         LegalMovesListNull = []
         LegalMovesListDestroyable = []
-        DoubleAdvance = False
         for row in board:
             for tile in row:
                 if tile.getPosition() == position:
-                    if self.getCount() == 0:
-                        DoubleAdvance = True
+                    i = 0
                     if self.getColor() == 'B':
-                        if position[0] + 1 < 8 and board[position[0] + 1][position[1]].getName() == '   ':
-                            LegalMovesListNull.append(board[position[0] + 1][position[1]])
-                            if DoubleAdvance and position[0] + 2 < 8 and board[position[0] + 2][position[1]].getName() == '   ':
-                                LegalMovesListNull.append(board[position[0] + 2][position[1]])
-                        if position[0] + 1 < 8 and position[1] + 1 < 8 and board[position[0] + 1][position[1] + 1].getName() != '   ' and board[position[0] + 1][position[1] + 1].getColor() != tile.getColor():
-                            LegalMovesListDestroyable.append(board[position[0] + 1][position[1] + 1])
-                        if position[0] + 1 < 8 and position[1] - 1 > -1 and board[position[0] + 1][position[1] - 1].getName() != '   ' and board[position[0] + 1][position[1] - 1].getColor() != tile.getColor():
-                            LegalMovesListDestroyable.append(board[position[0] + 1][position[1] - 1])
+                        i = 1
                     else:
-                        if position[0] - 1 > -1 and board[position[0] - 1][position[1]].getName() == '   ':
-                            LegalMovesListNull.append(board[position[0] - 1][position[1]])
-                            if DoubleAdvance and position[0] - 2 < 8 and board[position[0] - 2][position[1]].getName() == '   ':
-                                LegalMovesListNull.append(board[position[0] - 2][position[1]])
-                        if position[0] - 1 > -1 and position[1] + 1 < 8 and board[position[0] - 1][position[1] + 1].getName() != '   ' and board[position[0] - 1][position[1] + 1].getColor() != tile.getColor():
-                            LegalMovesListDestroyable.append(board[position[0] - 1][position[1] + 1])
-                        if position[0] - 1 > -1 and position[1] - 1 > -1 and board[position[0] - 1][position[1] - 1].getName() != '   ' and board[position[0] - 1][position[1] - 1].getColor() != tile.getColor():
-                            LegalMovesListDestroyable.append(board[position[0] - 1][position[1] - 1])
+                        i = -1
+                    row = position[0] + i
+                    column = position[1]
+                    if self.isInBound(row, column) and board[row][column].isNull():
+                        LegalMovesListNull.append(board[row][column])
+                        row = position[0] + 2 * i
+                        column = position[1]
+                        if self.getCount() == 0 and self.isInBound(row, column) and board[row][column].isNull():
+                            LegalMovesListNull.append(board[row][column])
+                    row = position[0] + i
+                    column = position[1] - 1
+                    if self.isInBound(row, column) and not board[row][column].isNull() and board[row][column].getColor() != tile.getColor():
+                        LegalMovesListDestroyable.append(board[row][column])
+                    row = position[0] + i
+                    column = position[1] + 1
+                    if self.isInBound(row, column) and not board[row][column].isNull() and board[row][column].getColor() != tile.getColor():
+                        LegalMovesListDestroyable.append(board[row][column])
         self.LegalMovesList = [LegalMovesListNull, LegalMovesListDestroyable]
         return self.LegalMovesList

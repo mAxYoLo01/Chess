@@ -19,7 +19,7 @@ class Rook(Piece):
                         while True:
                             row = position[0] + i * pos[0]
                             column = position[1] + i * pos[1]
-                            if self.isInBound(row, column) and board[row][column].getName() == "   ":
+                            if self.isInBound(row, column) and board[row][column].isNull():
                                 LegalMovesListNull.append(board[row][column])
                                 i += 1
                             else:

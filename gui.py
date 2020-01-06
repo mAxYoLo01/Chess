@@ -73,55 +73,55 @@ class CustomButton(QtWidgets.QPushButton):
 
     def enterEvent(self, event):
         if self.objectName()[0] == 'A':
-            self.parent().parent().A.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+            self.parent().parent().A.setText(hover1 + self.objectName()[0] + hover2)
         elif self.objectName()[0] == 'B':
-            self.parent().parent().B.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+            self.parent().parent().B.setText(hover1 + self.objectName()[0] + hover2)
         elif self.objectName()[0] == 'C':
-            self.parent().parent().C.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+            self.parent().parent().C.setText(hover1 + self.objectName()[0] + hover2)
         elif self.objectName()[0] == 'D':
-            self.parent().parent().D.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+            self.parent().parent().D.setText(hover1 + self.objectName()[0] + hover2)
         elif self.objectName()[0] == 'E':
-            self.parent().parent().E.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+            self.parent().parent().E.setText(hover1 + self.objectName()[0] + hover2)
         elif self.objectName()[0] == 'F':
-            self.parent().parent().F.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+            self.parent().parent().F.setText(hover1 + self.objectName()[0] + hover2)
         elif self.objectName()[0] == 'G':
-            self.parent().parent().G.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+            self.parent().parent().G.setText(hover1 + self.objectName()[0] + hover2)
         elif self.objectName()[0] == 'H':
-            self.parent().parent().H.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[0] + hover2))
+            self.parent().parent().H.setText(hover1 + self.objectName()[0] + hover2)
         if self.objectName()[1] == '1':
-            self.parent().parent().v1.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+            self.parent().parent().v1.setText(hover1 + self.objectName()[1] + hover2)
         elif self.objectName()[1] == '2':
-            self.parent().parent().v2.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+            self.parent().parent().v2.setText(hover1 + self.objectName()[1] + hover2)
         elif self.objectName()[1] == '3':
-            self.parent().parent().v3.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+            self.parent().parent().v3.setText(hover1 + self.objectName()[1] + hover2)
         elif self.objectName()[1] == '4':
-            self.parent().parent().v4.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+            self.parent().parent().v4.setText(hover1 + self.objectName()[1] + hover2)
         elif self.objectName()[1] == '5':
-            self.parent().parent().v5.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+            self.parent().parent().v5.setText(hover1 + self.objectName()[1] + hover2)
         elif self.objectName()[1] == '6':
-            self.parent().parent().v6.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+            self.parent().parent().v6.setText(hover1 + self.objectName()[1] + hover2)
         elif self.objectName()[1] == '7':
-            self.parent().parent().v7.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+            self.parent().parent().v7.setText(hover1 + self.objectName()[1] + hover2)
         elif self.objectName()[1] == '8':
-            self.parent().parent().v8.setText(QtCore.QCoreApplication.translate("MainWindow", hover1 + self.objectName()[1] + hover2))
+            self.parent().parent().v8.setText(hover1 + self.objectName()[1] + hover2)
 
     def leaveEvent(self, event):
-        self.parent().parent().A.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'A' + hover2))
-        self.parent().parent().B.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'B' + hover2))
-        self.parent().parent().C.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'C' + hover2))
-        self.parent().parent().D.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'D' + hover2))
-        self.parent().parent().E.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'E' + hover2))
-        self.parent().parent().F.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'F' + hover2))
-        self.parent().parent().G.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'G' + hover2))
-        self.parent().parent().H.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + 'H' + hover2))
-        self.parent().parent().v1.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '1' + hover2))
-        self.parent().parent().v2.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '2' + hover2))
-        self.parent().parent().v3.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '3' + hover2))
-        self.parent().parent().v4.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '4' + hover2))
-        self.parent().parent().v5.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '5' + hover2))
-        self.parent().parent().v6.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '6' + hover2))
-        self.parent().parent().v7.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '7' + hover2))
-        self.parent().parent().v8.setText(QtCore.QCoreApplication.translate("MainWindow", hover3 + '8' + hover2))
+        self.parent().parent().A.setText(hover3 + 'A' + hover2)
+        self.parent().parent().B.setText(hover3 + 'B' + hover2)
+        self.parent().parent().C.setText(hover3 + 'C' + hover2)
+        self.parent().parent().D.setText(hover3 + 'D' + hover2)
+        self.parent().parent().E.setText(hover3 + 'E' + hover2)
+        self.parent().parent().F.setText(hover3 + 'F' + hover2)
+        self.parent().parent().G.setText(hover3 + 'G' + hover2)
+        self.parent().parent().H.setText(hover3 + 'H' + hover2)
+        self.parent().parent().v1.setText(hover3 + '1' + hover2)
+        self.parent().parent().v2.setText(hover3 + '2' + hover2)
+        self.parent().parent().v3.setText(hover3 + '3' + hover2)
+        self.parent().parent().v4.setText(hover3 + '4' + hover2)
+        self.parent().parent().v5.setText(hover3 + '5' + hover2)
+        self.parent().parent().v6.setText(hover3 + '6' + hover2)
+        self.parent().parent().v7.setText(hover3 + '7' + hover2)
+        self.parent().parent().v8.setText(hover3 + '8' + hover2)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
