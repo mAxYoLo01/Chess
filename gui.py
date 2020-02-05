@@ -71,6 +71,9 @@ class CustomButton(QtWidgets.QPushButton):
     def __init__(self, parent):
         QtWidgets.QPushButton.__init__(self, parent)
 
+    def mousePressEvent(self, event):
+        window.action(self)
+
     def enterEvent(self, event):
         if self.objectName()[0] == 'A':
             self.parent().parent().A.setText(hover1 + self.objectName()[0] + hover2)
@@ -275,85 +278,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     button.setStyleSheet(button.styleSheet() + selected_stylesheet)
 
     def initializeButtons(self):
-        self.A1 = CustomButton(self.centralwidget)
-        self.A2 = CustomButton(self.centralwidget)
-        self.A3 = CustomButton(self.centralwidget)
-        self.A4 = CustomButton(self.centralwidget)
-        self.A5 = CustomButton(self.centralwidget)
-        self.A6 = CustomButton(self.centralwidget)
-        self.A7 = CustomButton(self.centralwidget)
-        self.A8 = CustomButton(self.centralwidget)
-        self.B1 = CustomButton(self.centralwidget)
-        self.B2 = CustomButton(self.centralwidget)
-        self.B3 = CustomButton(self.centralwidget)
-        self.B4 = CustomButton(self.centralwidget)
-        self.B5 = CustomButton(self.centralwidget)
-        self.B6 = CustomButton(self.centralwidget)
-        self.B7 = CustomButton(self.centralwidget)
-        self.B8 = CustomButton(self.centralwidget)
-        self.C1 = CustomButton(self.centralwidget)
-        self.C2 = CustomButton(self.centralwidget)
-        self.C3 = CustomButton(self.centralwidget)
-        self.C4 = CustomButton(self.centralwidget)
-        self.C5 = CustomButton(self.centralwidget)
-        self.C6 = CustomButton(self.centralwidget)
-        self.C7 = CustomButton(self.centralwidget)
-        self.C8 = CustomButton(self.centralwidget)
-        self.D1 = CustomButton(self.centralwidget)
-        self.D2 = CustomButton(self.centralwidget)
-        self.D3 = CustomButton(self.centralwidget)
-        self.D4 = CustomButton(self.centralwidget)
-        self.D5 = CustomButton(self.centralwidget)
-        self.D6 = CustomButton(self.centralwidget)
-        self.D7 = CustomButton(self.centralwidget)
-        self.D8 = CustomButton(self.centralwidget)
-        self.E1 = CustomButton(self.centralwidget)
-        self.E2 = CustomButton(self.centralwidget)
-        self.E3 = CustomButton(self.centralwidget)
-        self.E4 = CustomButton(self.centralwidget)
-        self.E5 = CustomButton(self.centralwidget)
-        self.E6 = CustomButton(self.centralwidget)
-        self.E7 = CustomButton(self.centralwidget)
-        self.E8 = CustomButton(self.centralwidget)
-        self.F1 = CustomButton(self.centralwidget)
-        self.F2 = CustomButton(self.centralwidget)
-        self.F3 = CustomButton(self.centralwidget)
-        self.F4 = CustomButton(self.centralwidget)
-        self.F5 = CustomButton(self.centralwidget)
-        self.F6 = CustomButton(self.centralwidget)
-        self.F7 = CustomButton(self.centralwidget)
-        self.F8 = CustomButton(self.centralwidget)
-        self.G1 = CustomButton(self.centralwidget)
-        self.G2 = CustomButton(self.centralwidget)
-        self.G3 = CustomButton(self.centralwidget)
-        self.G4 = CustomButton(self.centralwidget)
-        self.G5 = CustomButton(self.centralwidget)
-        self.G6 = CustomButton(self.centralwidget)
-        self.G7 = CustomButton(self.centralwidget)
-        self.G8 = CustomButton(self.centralwidget)
-        self.H1 = CustomButton(self.centralwidget)
-        self.H2 = CustomButton(self.centralwidget)
-        self.H3 = CustomButton(self.centralwidget)
-        self.H4 = CustomButton(self.centralwidget)
-        self.H5 = CustomButton(self.centralwidget)
-        self.H6 = CustomButton(self.centralwidget)
-        self.H7 = CustomButton(self.centralwidget)
-        self.H8 = CustomButton(self.centralwidget)
-        self.buttons = [
-            [self.A1, self.A2, self.A3, self.A4, self.A5, self.A6, self.A7, self.A8],
-            [self.B1, self.B2, self.B3, self.B4, self.B5, self.B6, self.B7, self.B8],
-            [self.C1, self.C2, self.C3, self.C4, self.C5, self.C6, self.C7, self.C8],
-            [self.D1, self.D2, self.D3, self.D4, self.D5, self.D6, self.D7, self.D8],
-            [self.E1, self.E2, self.E3, self.E4, self.E5, self.E6, self.E7, self.E8],
-            [self.F1, self.F2, self.F3, self.F4, self.F5, self.F6, self.F7, self.F8],
-            [self.G1, self.G2, self.G3, self.G4, self.G5, self.G6, self.G7, self.G8],
-            [self.H1, self.H2, self.H3, self.H4, self.H5, self.H6, self.H7, self.H8]]
+        self.buttons = []
+        for _ in range(8):
+            row = [CustomButton(self.centralwidget) for _ in range(8)]
+            self.buttons.append(row)
         new_x = 300
         i = 0
-        for rowB in self.buttons:
+        for row in self.buttons:
             new_y = 60
             j = 0
-            for button in rowB:
+            for button in row:
                 button.setGeometry(QtCore.QRect(new_x, new_y, 90, 90))
                 button.setObjectName(PositionToButton((j, i)))
                 button.setIconSize(QtCore.QSize(60, 60))
@@ -365,70 +299,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 j += 1
             new_x += 90
             i += 1
-        self.A1.clicked.connect(lambda: self.action(self.A1))
-        self.A2.clicked.connect(lambda: self.action(self.A2))
-        self.A3.clicked.connect(lambda: self.action(self.A3))
-        self.A4.clicked.connect(lambda: self.action(self.A4))
-        self.A5.clicked.connect(lambda: self.action(self.A5))
-        self.A6.clicked.connect(lambda: self.action(self.A6))
-        self.A7.clicked.connect(lambda: self.action(self.A7))
-        self.A8.clicked.connect(lambda: self.action(self.A8))
-        self.B1.clicked.connect(lambda: self.action(self.B1))
-        self.B2.clicked.connect(lambda: self.action(self.B2))
-        self.B3.clicked.connect(lambda: self.action(self.B3))
-        self.B4.clicked.connect(lambda: self.action(self.B4))
-        self.B5.clicked.connect(lambda: self.action(self.B5))
-        self.B6.clicked.connect(lambda: self.action(self.B6))
-        self.B7.clicked.connect(lambda: self.action(self.B7))
-        self.B8.clicked.connect(lambda: self.action(self.B8))
-        self.C1.clicked.connect(lambda: self.action(self.C1))
-        self.C2.clicked.connect(lambda: self.action(self.C2))
-        self.C3.clicked.connect(lambda: self.action(self.C3))
-        self.C4.clicked.connect(lambda: self.action(self.C4))
-        self.C5.clicked.connect(lambda: self.action(self.C5))
-        self.C6.clicked.connect(lambda: self.action(self.C6))
-        self.C7.clicked.connect(lambda: self.action(self.C7))
-        self.C8.clicked.connect(lambda: self.action(self.C8))
-        self.D1.clicked.connect(lambda: self.action(self.D1))
-        self.D2.clicked.connect(lambda: self.action(self.D2))
-        self.D3.clicked.connect(lambda: self.action(self.D3))
-        self.D4.clicked.connect(lambda: self.action(self.D4))
-        self.D5.clicked.connect(lambda: self.action(self.D5))
-        self.D6.clicked.connect(lambda: self.action(self.D6))
-        self.D7.clicked.connect(lambda: self.action(self.D7))
-        self.D8.clicked.connect(lambda: self.action(self.D8))
-        self.E1.clicked.connect(lambda: self.action(self.E1))
-        self.E2.clicked.connect(lambda: self.action(self.E2))
-        self.E3.clicked.connect(lambda: self.action(self.E3))
-        self.E4.clicked.connect(lambda: self.action(self.E4))
-        self.E5.clicked.connect(lambda: self.action(self.E5))
-        self.E6.clicked.connect(lambda: self.action(self.E6))
-        self.E7.clicked.connect(lambda: self.action(self.E7))
-        self.E8.clicked.connect(lambda: self.action(self.E8))
-        self.F1.clicked.connect(lambda: self.action(self.F1))
-        self.F2.clicked.connect(lambda: self.action(self.F2))
-        self.F3.clicked.connect(lambda: self.action(self.F3))
-        self.F4.clicked.connect(lambda: self.action(self.F4))
-        self.F5.clicked.connect(lambda: self.action(self.F5))
-        self.F6.clicked.connect(lambda: self.action(self.F6))
-        self.F7.clicked.connect(lambda: self.action(self.F7))
-        self.F8.clicked.connect(lambda: self.action(self.F8))
-        self.G1.clicked.connect(lambda: self.action(self.G1))
-        self.G2.clicked.connect(lambda: self.action(self.G2))
-        self.G3.clicked.connect(lambda: self.action(self.G3))
-        self.G4.clicked.connect(lambda: self.action(self.G4))
-        self.G5.clicked.connect(lambda: self.action(self.G5))
-        self.G6.clicked.connect(lambda: self.action(self.G6))
-        self.G7.clicked.connect(lambda: self.action(self.G7))
-        self.G8.clicked.connect(lambda: self.action(self.G8))
-        self.H1.clicked.connect(lambda: self.action(self.H1))
-        self.H2.clicked.connect(lambda: self.action(self.H2))
-        self.H3.clicked.connect(lambda: self.action(self.H3))
-        self.H4.clicked.connect(lambda: self.action(self.H4))
-        self.H5.clicked.connect(lambda: self.action(self.H5))
-        self.H6.clicked.connect(lambda: self.action(self.H6))
-        self.H7.clicked.connect(lambda: self.action(self.H7))
-        self.H8.clicked.connect(lambda: self.action(self.H8))
         self.moving.raise_()
 
 
