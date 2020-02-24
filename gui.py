@@ -75,56 +75,21 @@ class CustomButton(QtWidgets.QPushButton):
         window.action(self)
 
     def enterEvent(self, event):
-        if self.objectName()[0] == 'A':
-            self.parent().parent().A.setText(hover1 + self.objectName()[0] + hover2)
-        elif self.objectName()[0] == 'B':
-            self.parent().parent().B.setText(hover1 + self.objectName()[0] + hover2)
-        elif self.objectName()[0] == 'C':
-            self.parent().parent().C.setText(hover1 + self.objectName()[0] + hover2)
-        elif self.objectName()[0] == 'D':
-            self.parent().parent().D.setText(hover1 + self.objectName()[0] + hover2)
-        elif self.objectName()[0] == 'E':
-            self.parent().parent().E.setText(hover1 + self.objectName()[0] + hover2)
-        elif self.objectName()[0] == 'F':
-            self.parent().parent().F.setText(hover1 + self.objectName()[0] + hover2)
-        elif self.objectName()[0] == 'G':
-            self.parent().parent().G.setText(hover1 + self.objectName()[0] + hover2)
-        elif self.objectName()[0] == 'H':
-            self.parent().parent().H.setText(hover1 + self.objectName()[0] + hover2)
-        if self.objectName()[1] == '1':
-            self.parent().parent().v1.setText(hover1 + self.objectName()[1] + hover2)
-        elif self.objectName()[1] == '2':
-            self.parent().parent().v2.setText(hover1 + self.objectName()[1] + hover2)
-        elif self.objectName()[1] == '3':
-            self.parent().parent().v3.setText(hover1 + self.objectName()[1] + hover2)
-        elif self.objectName()[1] == '4':
-            self.parent().parent().v4.setText(hover1 + self.objectName()[1] + hover2)
-        elif self.objectName()[1] == '5':
-            self.parent().parent().v5.setText(hover1 + self.objectName()[1] + hover2)
-        elif self.objectName()[1] == '6':
-            self.parent().parent().v6.setText(hover1 + self.objectName()[1] + hover2)
-        elif self.objectName()[1] == '7':
-            self.parent().parent().v7.setText(hover1 + self.objectName()[1] + hover2)
-        elif self.objectName()[1] == '8':
-            self.parent().parent().v8.setText(hover1 + self.objectName()[1] + hover2)
+        column = self.parent().parent().columns
+        row = self.parent().parent().rows
+        for i in range(column.count()):
+            if column.itemAt(i).widget().objectName() == self.objectName()[0]:
+                column.itemAt(i).widget().setText(hover1 + column.itemAt(i).widget().objectName() + hover2)
+        for i in range(row.count()):
+            if row.itemAt(i).widget().objectName()[1] == self.objectName()[1]:
+                row.itemAt(i).widget().setText(hover1 + row.itemAt(i).widget().objectName()[1] + hover2)
 
     def leaveEvent(self, event):
-        self.parent().parent().A.setText(hover3 + 'A' + hover2)
-        self.parent().parent().B.setText(hover3 + 'B' + hover2)
-        self.parent().parent().C.setText(hover3 + 'C' + hover2)
-        self.parent().parent().D.setText(hover3 + 'D' + hover2)
-        self.parent().parent().E.setText(hover3 + 'E' + hover2)
-        self.parent().parent().F.setText(hover3 + 'F' + hover2)
-        self.parent().parent().G.setText(hover3 + 'G' + hover2)
-        self.parent().parent().H.setText(hover3 + 'H' + hover2)
-        self.parent().parent().v1.setText(hover3 + '1' + hover2)
-        self.parent().parent().v2.setText(hover3 + '2' + hover2)
-        self.parent().parent().v3.setText(hover3 + '3' + hover2)
-        self.parent().parent().v4.setText(hover3 + '4' + hover2)
-        self.parent().parent().v5.setText(hover3 + '5' + hover2)
-        self.parent().parent().v6.setText(hover3 + '6' + hover2)
-        self.parent().parent().v7.setText(hover3 + '7' + hover2)
-        self.parent().parent().v8.setText(hover3 + '8' + hover2)
+        column = self.parent().parent().columns
+        row = self.parent().parent().rows
+        for i in range(column.count()):
+            column.itemAt(i).widget().setText(hover3 + column.itemAt(i).widget().objectName() + hover2)
+            row.itemAt(i).widget().setText(hover3 + row.itemAt(i).widget().objectName()[1] + hover2)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -143,17 +108,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def action(self, button):
         position = ButtonToPosition(button)
-        board.isCheck('B')
-        board.isCheckmate('B')
+        # board.isCheck('B')
+        # board.isCheckmate('B')
         if self.selected is None:
             if board.hasPiece(position):
-                if board.getPiece(position).getColor() == self.currentColor:
+                if board.board[position[0]][position[1]].color == self.currentColor:
                     self.selected = button
-                    LegalMovesList = board.getPiece(position).getLegalMoves(board.getBoard())
+                    LegalMovesList = board.board[position[0]][position[1]].getLegalMoves(board.board)
                     for LegalNull in LegalMovesList[0]:
-                        self.selectable.append(PositionToButton(LegalNull.getPosition()))
+                        self.selectable.append(PositionToButton(LegalNull.position))
                     for LegalDestroyable in LegalMovesList[1]:
-                        self.destroyable.append(PositionToButton(LegalDestroyable.getPosition()))
+                        self.destroyable.append(PositionToButton(LegalDestroyable.position))
                 else:
                     print("Not your turn!")
         else:
@@ -178,16 +143,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def movingAnimation(self, button1, button2):
         fluidity = 20
+        position = ButtonToPosition(button1)
         self.moving.setGeometry(QtCore.QRect(button1.x(), button1.y(), 90, 90))
         icon = QtGui.QIcon()
         button1.setIcon(icon)
-        piece = board.getPiece(ButtonToPosition(button1))
+        piece = board.board[position[0]][position[1]]
         self.moving.setIcon(self.convertToImage(piece))
         incX = (button2.x() - button1.x()) / fluidity
         incY = (button2.y() - button1.y()) / fluidity
         newX = button1.x()
         newY = button1.y()
-        if "_N" not in piece.getName():
+        if "_N" not in piece.name:
             for _ in range(fluidity):
                 newX += incX
                 newY += incY
@@ -219,36 +185,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def createIcons(self):
         for rowButton in self.buttons:
             for button in rowButton:
-                for row in board.getBoard():
+                for row in board.board:
                     for tile in row:
-                        if ButtonToPosition(button) == tile.getPosition():
+                        if ButtonToPosition(button) == tile.position:
                             button.setIcon(self.convertToImage(tile))
 
     def convertToImage(self, tile):
         icon = QtGui.QIcon()
-        if "B_Q" == tile.getName():
+        if tile.isNull():
+            pass
+        elif "B_Q" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/black_queen.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        elif "B_K" == tile.getName():
+        elif "B_K" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/black_king.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        elif "B_B" == tile.getName():
+        elif "B_B" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/black_bishop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        elif "B_N" == tile.getName():
+        elif "B_N" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/black_knight.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        elif "B_R" == tile.getName():
+        elif "B_R" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/black_rook.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        elif "B_P" == tile.getName():
+        elif "B_P" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/black_pawn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        elif "W_Q" == tile.getName():
+        elif "W_Q" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/white_queen.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        elif "W_K" == tile.getName():
+        elif "W_K" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/white_king.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        elif "W_B" == tile.getName():
+        elif "W_B" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/white_bishop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        elif "W_N" == tile.getName():
+        elif "W_N" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/white_knight.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        elif "W_R" == tile.getName():
+        elif "W_R" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/white_rook.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        elif "W_P" == tile.getName():
+        elif "W_P" == tile.name:
             icon.addPixmap(QtGui.QPixmap(":/Images/white_pawn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         return icon
 

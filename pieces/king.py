@@ -7,20 +7,19 @@ class King(Piece):
         self.name = color + '_' + 'K'
 
     def getLegalMoves(self, board):
-        position = self.getPosition()
         LegalMovesListNull = []
         LegalMovesListDestroyable = []
         for row in board:
             for tile in row:
-                if tile.getPosition() == position:
+                if tile.position == self.position:
                     positions = [[1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1], [0, 1]]
                     for pos in positions:
-                        row = position[0] + pos[0]
-                        column = position[1] + pos[1]
+                        row = self.position[0] + pos[0]
+                        column = self.position[1] + pos[1]
                         if self.isInBound(row, column):
                             if board[row][column].isNull():
                                 LegalMovesListNull.append(board[row][column])
-                            elif board[row][column].getColor() != tile.getColor():
+                            elif board[row][column].color != tile.color:
                                 LegalMovesListDestroyable.append(board[row][column])
         self.LegalMovesList = [LegalMovesListNull, LegalMovesListDestroyable]
         return self.LegalMovesList

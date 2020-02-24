@@ -8,32 +8,31 @@ class Pawn(Piece):
         self.count = 0
 
     def getLegalMoves(self, board):
-        position = self.getPosition()
         LegalMovesListNull = []
         LegalMovesListDestroyable = []
         for row in board:
             for tile in row:
-                if tile.getPosition() == position:
+                if tile.position == self.position:
                     i = 0
-                    if self.getColor() == 'B':
+                    if self.color == 'B':
                         i = 1
                     else:
                         i = -1
-                    row = position[0] + i
-                    column = position[1]
+                    row = self.position[0] + i
+                    column = self.position[1]
                     if self.isInBound(row, column) and board[row][column].isNull():
                         LegalMovesListNull.append(board[row][column])
-                        row = position[0] + 2 * i
-                        column = position[1]
-                        if self.getCount() == 0 and self.isInBound(row, column) and board[row][column].isNull():
+                        row = self.position[0] + 2 * i
+                        column = self.position[1]
+                        if self.count == 0 and self.isInBound(row, column) and board[row][column].isNull():
                             LegalMovesListNull.append(board[row][column])
-                    row = position[0] + i
-                    column = position[1] - 1
-                    if self.isInBound(row, column) and not board[row][column].isNull() and board[row][column].getColor() != tile.getColor():
+                    row = self.position[0] + i
+                    column = self.position[1] - 1
+                    if self.isInBound(row, column) and not board[row][column].isNull() and board[row][column].color != tile.color:
                         LegalMovesListDestroyable.append(board[row][column])
-                    row = position[0] + i
-                    column = position[1] + 1
-                    if self.isInBound(row, column) and not board[row][column].isNull() and board[row][column].getColor() != tile.getColor():
+                    row = self.position[0] + i
+                    column = self.position[1] + 1
+                    if self.isInBound(row, column) and not board[row][column].isNull() and board[row][column].color != tile.color:
                         LegalMovesListDestroyable.append(board[row][column])
         self.LegalMovesList = [LegalMovesListNull, LegalMovesListDestroyable]
         return self.LegalMovesList

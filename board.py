@@ -62,14 +62,14 @@ class Board:
         self.addPiece(pawnB2, (1, 1))
         self.addPiece(pawnB3, (1, 2))
         self.addPiece(pawnB4, (1, 3))
-        # self.addPiece(pawnB5, (1, 4))
-        # self.addPiece(pawnB6, (1, 5))
+        self.addPiece(pawnB5, (1, 4))
+        self.addPiece(pawnB6, (1, 5))
         self.addPiece(pawnB7, (1, 6))
         self.addPiece(pawnB8, (1, 7))
         self.addPiece(pawnW1, (6, 0))
         self.addPiece(pawnW2, (6, 1))
         self.addPiece(pawnW3, (6, 2))
-        # self.addPiece(pawnW4, (6, 3))
+        self.addPiece(pawnW4, (6, 3))
         self.addPiece(pawnW5, (6, 4))
         self.addPiece(pawnW6, (6, 5))
         self.addPiece(pawnW7, (6, 6))
@@ -87,34 +87,34 @@ class Board:
         boardToPrint = "#############################################################\n\n "
         boardToPrint += " |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |\n"
         i = 0
-        for row in self.getBoard():
+        for row in self.board:
             boardToPrint += str(i)
             for tile in row:
-                boardToPrint += " | " + tile.getName()
+                boardToPrint += " | " + tile.name
             boardToPrint += " |\n"
             i += 1
         print(boardToPrint)
 
     def printLegalMovesBoard(self, position):
-        piece = self.getPiece(position)
+        piece = self.board[position[0]][position[1]]
         try:
-            ListToPrint = piece.getLegalMoves(self.getBoard())
+            ListToPrint = piece.getLegalMoves(self.board)
             BoardToPrint = []
             for i in range(8):
                 row = []
                 for j in range(8):
                     row.append("   ")
                 BoardToPrint.append(row)
-            for row in self.getBoard():
+            for row in self.board:
                 for tile in row:
-                    if piece.getPosition() == tile.getPosition():
-                        BoardToPrint[self.getBoard().index(row)][row.index(tile)] = " O "
+                    if piece.position == tile.position:
+                        BoardToPrint[self.board.index(row)][row.index(tile)] = " O "
                     for null in ListToPrint[0]:
-                        if null.getPosition() == tile.getPosition():
-                            BoardToPrint[self.getBoard().index(row)][row.index(tile)] = " - "
+                        if null.position == tile.position:
+                            BoardToPrint[self.board.index(row)][row.index(tile)] = " - "
                     for destroyable in ListToPrint[1]:
-                        if destroyable.getPosition() == tile.getPosition():
-                            BoardToPrint[self.getBoard().index(row)][row.index(tile)] = " X "
+                        if destroyable.position == tile.position:
+                            BoardToPrint[self.board.index(row)][row.index(tile)] = " X "
             ToPrint = "#############################################################\n\n "
             ToPrint += " |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |\n"
             i = 0
@@ -129,68 +129,62 @@ class Board:
             print("A NullPiece() does not have any legal moves!")
 
     def move(self, position1, position2):
-        piece = self.getPiece(position1)
-        LegalMovesList = piece.getLegalMoves(self.getBoard())[0] + piece.getLegalMoves(self.getBoard())[1]
+        piece = self.board[position1[0]][position1[1]]
+        LegalMovesList = piece.getLegalMoves(self.board)[0] + piece.getLegalMoves(self.board)[1]
         CanMove = False
         for legalMoves in LegalMovesList:
-            if legalMoves.getPosition() == position2:
+            if legalMoves.position == position2:
                 self.addPiece(piece, position2)
                 self.removePiece(position1)
-                piece.incrementCount()
+                piece.count += 1
                 CanMove = True
                 break
         if not CanMove:
             print("Can't move at this position!")
 
-    def getBoard(self):
-        return self.board
-
-    def getPiece(self, position):
-        return self.getBoard()[position[0]][position[1]]
-
     def addPiece(self, piece, position):
-        piece.setPosition(position)
-        self.getBoard()[position[0]][position[1]] = piece
+        piece.position = position
+        self.board[position[0]][position[1]] = piece
 
     def removePiece(self, position):
-        self.getBoard()[position[0]][position[1]] = NullPiece(position)
+        self.board[position[0]][position[1]] = NullPiece(position)
 
     def hasPiece(self, position):
-        return self.getBoard()[position[0]][position[1]].getName() != '   '
+        return not self.board[position[0]][position[1]].isNull()
 
     def isCheck(self, color):
         king = None
-        for row in self.getBoard():
+        for row in self.board:
             for tile in row:
-                if tile.getName() == color + '_K':
+                if tile.name == color + '_K':
                     king = tile
                     break
-        # kingLegalMoves = king.getLegalMoves(self.getBoard())[0] + tile.getLegalMoves(self.getBoard())[1] + [king]
+        # kingLegalMoves = king.getLegalMoves(self.board)[0] + tile.getLegalMoves(self.board)[1] + [king]
         otherColorLegalMoves = []
-        for row in self.getBoard():
+        for row in self.board:
             for tile in row:
-                if color not in tile.getName() and self.hasPiece(tile.getPosition()):
-                    tileLegalMoves = tile.getLegalMoves(self.getBoard())[0] + tile.getLegalMoves(self.getBoard())[1]
+                if color not in tile.name and self.hasPiece(tile.position):
+                    tileLegalMoves = tile.getLegalMoves(self.board)[0] + tile.getLegalMoves(self.board)[1]
                     for legalMove in tileLegalMoves:
                         if legalMove not in otherColorLegalMoves:
                             otherColorLegalMoves.append(legalMove)
         # for kingLegalMove in kingLegalMoves:
         if king in otherColorLegalMoves:
-            print("Check: " + str(king.getPosition()))
+            print("Check: " + str(king.position))
 
     def isCheckmate(self, color):
         king = None
-        for row in self.getBoard():
+        for row in self.board:
             for tile in row:
-                if tile.getName() == color + '_K':
+                if tile.name == color + '_K':
                     king = tile
                     break
-        kingLegalMoves = king.getLegalMoves(self.getBoard())[0] + tile.getLegalMoves(self.getBoard())[1] + [king]
+        kingLegalMoves = king.getLegalMoves(self.board)[0] + tile.getLegalMoves(self.board)[1] + [king]
         otherColorLegalMoves = []
-        for row in self.getBoard():
+        for row in self.board:
             for tile in row:
-                if color not in tile.getName() and self.hasPiece(tile.getPosition()):
-                    tileLegalMoves = tile.getLegalMoves(self.getBoard())[0] + tile.getLegalMoves(self.getBoard())[1]
+                if color not in tile.name and self.hasPiece(tile.position):
+                    tileLegalMoves = tile.getLegalMoves(self.board)[0] + tile.getLegalMoves(self.board)[1]
                     for legalMove in tileLegalMoves:
                         if legalMove not in otherColorLegalMoves:
                             otherColorLegalMoves.append(legalMove)
