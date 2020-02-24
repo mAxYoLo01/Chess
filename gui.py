@@ -18,53 +18,20 @@ selectable_stylesheet = "background-color: qlineargradient(spread:pad, x1:0, y1:
 destroyable_stylesheet = "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(203, 0, 0, 255), stop:1 rgba(220, 85, 85, 255));"
 black_stylesheet = "border: 2px solid;\n background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(123, 119, 120, 255), stop:1 rgba(125, 121, 122, 255));"
 white_stylesheet = "border: 2px solid;\n background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(231, 231, 231, 255), stop:1 rgba(246, 251, 247, 255));"
-hover1 = "<html><head/><body><p><span style=\" font-size:24pt; font-weight:600; color:#ffff00;\">"
-hover2 = "</span></p></body></html>"
-hover3 = "<html><head/><body><p><span style=\" font-size:20pt; font-weight:600; color:#ffffff;\">"
+hoverEnter = "<html><head/><body><p><span style=\" font-size:24pt; font-weight:600; color:#ffff00;\">"
+hoverLeave = "<html><head/><body><p><span style=\" font-size:20pt; font-weight:600; color:#ffffff;\">"
+hoverEnd = "</span></p></body></html>"
 
 
 def ButtonToPosition(button):
-    row = int(button.objectName()[1]) - 1
-    column = None
-    if button.objectName()[0] == 'A':
-        column = 0
-    elif button.objectName()[0] == 'B':
-        column = 1
-    elif button.objectName()[0] == 'C':
-        column = 2
-    elif button.objectName()[0] == 'D':
-        column = 3
-    elif button.objectName()[0] == 'E':
-        column = 4
-    elif button.objectName()[0] == 'F':
-        column = 5
-    elif button.objectName()[0] == 'G':
-        column = 6
-    elif button.objectName()[0] == 'H':
-        column = 7
-    return (row, column)
+    alphabet = 'ABCDEFGH'
+    for letter in alphabet:
+        if letter == button.objectName()[0]:
+            return (int(button.objectName()[1]) - 1, alphabet.index(letter))
 
 
 def PositionToButton(position):
-    row = position[0] + 1
-    column = ''
-    if position[1] == 0:
-        column = 'A'
-    elif position[1] == 1:
-        column = 'B'
-    elif position[1] == 2:
-        column = 'C'
-    elif position[1] == 3:
-        column = 'D'
-    elif position[1] == 4:
-        column = 'E'
-    elif position[1] == 5:
-        column = 'F'
-    elif position[1] == 6:
-        column = 'G'
-    elif position[1] == 7:
-        column = 'H'
-    return column + str(row)
+    return 'ABCDEFGH'[position[1]] + str(position[0] + 1)
 
 
 class CustomButton(QtWidgets.QPushButton):
@@ -79,17 +46,17 @@ class CustomButton(QtWidgets.QPushButton):
         row = self.parent().parent().rows
         for i in range(column.count()):
             if column.itemAt(i).widget().objectName() == self.objectName()[0]:
-                column.itemAt(i).widget().setText(hover1 + column.itemAt(i).widget().objectName() + hover2)
+                column.itemAt(i).widget().setText(hoverEnter + column.itemAt(i).widget().objectName() + hoverEnd)
         for i in range(row.count()):
             if row.itemAt(i).widget().objectName()[1] == self.objectName()[1]:
-                row.itemAt(i).widget().setText(hover1 + row.itemAt(i).widget().objectName()[1] + hover2)
+                row.itemAt(i).widget().setText(hoverEnter + row.itemAt(i).widget().objectName()[1] + hoverEnd)
 
     def leaveEvent(self, event):
         column = self.parent().parent().columns
         row = self.parent().parent().rows
         for i in range(column.count()):
-            column.itemAt(i).widget().setText(hover3 + column.itemAt(i).widget().objectName() + hover2)
-            row.itemAt(i).widget().setText(hover3 + row.itemAt(i).widget().objectName()[1] + hover2)
+            column.itemAt(i).widget().setText(hoverLeave + column.itemAt(i).widget().objectName() + hoverEnd)
+            row.itemAt(i).widget().setText(hoverLeave + row.itemAt(i).widget().objectName()[1] + hoverEnd)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
