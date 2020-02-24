@@ -5,8 +5,6 @@ from board import Board
 import sys
 import os
 
-board = Board()
-
 if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
     QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 
@@ -59,43 +57,55 @@ class CustomButton(QtWidgets.QPushButton):
             row.itemAt(i).widget().setText(hoverLeave + row.itemAt(i).widget().objectName()[1] + hoverEnd)
 
 
+board = Board()
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self):
+    def __init__(self, board):
         QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
+        self.board = Board()
         self.setupUi(self)
         self.setWindowTitle("Chess")
         self.initializeButtons()
         self.selected = None
-        self.currentColor = 'B'
+        self.currentColor = 'W'
         self.selectable = []
         self.destroyable = []
         self.createGridColor()
         self.createIcons()
 
     def action(self, button):
+        self.printText("")
         position = ButtonToPosition(button)
-        # board.isCheck('B')
-        # board.isCheckmate('B')
         if self.selected is None:
-            if board.hasPiece(position):
-                if board.board[position[0]][position[1]].color == self.currentColor:
+            if self.board.hasPiece(position):
+                if self.board.board[position[0]][position[1]].color == self.currentColor:
+                    if self.board.isCheck(self.currentColor):
+                        if self.currentColor == 'W':
+                            self.printText("White king is in check!")
+                        else:
+                            self.printText("Black king is in check!")
                     self.selected = button
-                    LegalMovesList = board.board[position[0]][position[1]].getLegalMoves(board.board)
+                    LegalMovesList = self.board.board[position[0]][position[1]].getLegalMoves(self.board.board)
                     for LegalNull in LegalMovesList[0]:
                         self.selectable.append(PositionToButton(LegalNull.position))
                     for LegalDestroyable in LegalMovesList[1]:
                         self.destroyable.append(PositionToButton(LegalDestroyable.position))
                 else:
-                    print("Not your turn!")
+                    self.printText("Not your turn!")
         else:
             if button != self.selected:
                 if button.objectName() in self.selectable or button.objectName() in self.destroyable:
                     self.movingAnimation(self.selected, button)
-                    board.move(ButtonToPosition(self.selected), position)
+                    self.board.move(ButtonToPosition(self.selected), position)
+                    if self.board.isCheck(self.currentColor):
+                        self.printText("Checkmate! New game?")
+                        self.yes.setGeometry(QtCore.QRect(self.yes.x(), 920, 100, 60))
+                        self.no.setGeometry(QtCore.QRect(self.no.x(), 920, 100, 60))
                     self.switchColor()
                 else:
-                    print("Can't move at this position!")
+                    self.printText("Can't move at this position!")
             self.selected = None
             self.selectable = []
             self.destroyable = []
@@ -114,7 +124,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.moving.setGeometry(QtCore.QRect(button1.x(), button1.y(), 90, 90))
         icon = QtGui.QIcon()
         button1.setIcon(icon)
-        piece = board.board[position[0]][position[1]]
+        piece = self.board.board[position[0]][position[1]]
         self.moving.setIcon(self.convertToImage(piece))
         incX = (button2.x() - button1.x()) / fluidity
         incY = (button2.y() - button1.y()) / fluidity
@@ -152,7 +162,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def createIcons(self):
         for rowButton in self.buttons:
             for button in rowButton:
-                for row in board.board:
+                for row in self.board.board:
                     for tile in row:
                         if ButtonToPosition(button) == tile.position:
                             button.setIcon(self.convertToImage(tile))
@@ -214,12 +224,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if self.selected is not None and button.objectName() == self.selected.objectName():
                     button.setStyleSheet(button.styleSheet() + selected_stylesheet)
 
+    def printText(self, text):
+        self.text.setText("<html><head/><body><p align=\"center\"><span style=\"font-size:28pt;font-weight:600;color:#ffffff;\">" + text + "</span></p></body></html>")
+
+    def startNewGame(self):
+        self.board.__init__()
+        self.currentColor = 'W'
+        self.printText("")
+        self.yes.setGeometry(QtCore.QRect(self.yes.x(), -100, 100, 60))
+        self.no.setGeometry(QtCore.QRect(self.no.x(), -100, 100, 60))
+        self.createGridColor()
+        self.createIcons()
+
     def initializeButtons(self):
         self.buttons = []
         for _ in range(8):
             row = [CustomButton(self.centralwidget) for _ in range(8)]
             self.buttons.append(row)
-        new_x = 300
+        new_x = 60
         i = 0
         for row in self.buttons:
             new_y = 60
@@ -237,11 +259,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             new_x += 90
             i += 1
         self.moving.raise_()
+        self.yes.clicked.connect(lambda: self.startNewGame())
+        self.no.clicked.connect(lambda: sys.exit())
 
 
 if __name__ == "__main__":
     os.system('cls')
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow(board)
     window.show()
     sys.exit(app.exec_())

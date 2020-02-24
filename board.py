@@ -154,43 +154,18 @@ class Board:
 
     def isCheck(self, color):
         king = None
-        for row in self.board:
-            for tile in row:
-                if tile.name == color + '_K':
-                    king = tile
-                    break
-        # kingLegalMoves = king.getLegalMoves(self.board)[0] + tile.getLegalMoves(self.board)[1] + [king]
         otherColorLegalMoves = []
         for row in self.board:
             for tile in row:
-                if color not in tile.name and self.hasPiece(tile.position):
-                    tileLegalMoves = tile.getLegalMoves(self.board)[0] + tile.getLegalMoves(self.board)[1]
-                    for legalMove in tileLegalMoves:
-                        if legalMove not in otherColorLegalMoves:
-                            otherColorLegalMoves.append(legalMove)
-        # for kingLegalMove in kingLegalMoves:
+                if not tile.isNull():
+                    if tile.name == color + '_K':
+                        king = tile
+                    if color not in tile.name and self.hasPiece(tile.position):
+                        tileDestroyable = tile.getLegalMoves(self.board)[1]
+                        for legalMove in tileDestroyable:
+                            if legalMove not in otherColorLegalMoves:
+                                otherColorLegalMoves.append(legalMove)
         if king in otherColorLegalMoves:
-            print("Check: " + str(king.position))
-
-    def isCheckmate(self, color):
-        king = None
-        for row in self.board:
-            for tile in row:
-                if tile.name == color + '_K':
-                    king = tile
-                    break
-        kingLegalMoves = king.getLegalMoves(self.board)[0] + tile.getLegalMoves(self.board)[1] + [king]
-        otherColorLegalMoves = []
-        for row in self.board:
-            for tile in row:
-                if color not in tile.name and self.hasPiece(tile.position):
-                    tileLegalMoves = tile.getLegalMoves(self.board)[0] + tile.getLegalMoves(self.board)[1]
-                    for legalMove in tileLegalMoves:
-                        if legalMove not in otherColorLegalMoves:
-                            otherColorLegalMoves.append(legalMove)
-        legalNumber = len(kingLegalMoves)
-        for kingLegalMove in kingLegalMoves:
-            if kingLegalMove in otherColorLegalMoves:
-                legalNumber -= 1
-        if legalNumber == 0:
-            print("Checkmate.")
+            return True
+        else:
+            return False
