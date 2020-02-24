@@ -140,8 +140,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def action(self, button):
         position = ButtonToPosition(button)
+        board.isCheck('B')
+        board.isCheckmate('B')
         if self.selected is None:
-            if board.getPiece(position).getName() != '   ':
+            if board.hasPiece(position):
                 if board.getPiece(position).getColor() == self.currentColor:
                     self.selected = button
                     LegalMovesList = board.getPiece(position).getLegalMoves(board.getBoard())
